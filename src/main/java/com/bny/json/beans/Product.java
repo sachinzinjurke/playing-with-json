@@ -1,6 +1,7 @@
 package com.bny.json.beans;
 
 import java.util.Date;
+
 public class Product {
 
 	private long id;

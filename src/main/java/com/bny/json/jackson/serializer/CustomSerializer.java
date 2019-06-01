@@ -1,45 +1,34 @@
 package com.bny.json.jackson.serializer;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-import com.bny.json.beans.Product;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
+import com.fasterxml.jackson.databind.ser.PropertyWriter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 
-public class CustomSerializer extends StdSerializer<Product>{
-	public CustomSerializer() {
-	      this(Product.class);
-	   }
-	   protected CustomSerializer(Class<Product> t) {
-	      super(t);
-	   }
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7429778924045254936L;
+public class CustomSerializer extends SimpleBeanPropertyFilter{
 
 	@Override
-	public void serialize(Product value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-		 DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
-		 gen.writeStartObject();
-		 gen.writeStringField("name", value.getName().toUpperCase());
-		 gen.writeStringField("field1",value.getField1());
-		// gen.writeStringField("created", df.format(value.getCreated()));
-		 gen.writeObjectField("created", value.getCreated());
-		 gen.writeEndObject();
+	public void serializeAsElement(Object elementValue, JsonGenerator jgen, SerializerProvider provider,
+			PropertyWriter writer) throws Exception {
+		
+		 if (include(writer)) {
+			 if(writer.getName().equals("amount")) {
+				 System.out.println("###############");
+				 writer.serializeAsField(50, jgen, provider);
+			 }
+	        
+	      } else if (!jgen.canOmitFields()) { // since 2.3
+	         writer.serializeAsOmittedField(elementValue, jgen, provider);
+	      }
 	}
-
-	/*
-	 * @Override public void serialize(Product value, JsonGenerator gen,
-	 * SerializerProvider serializers) throws IOException {
-	 * 
-	 * gen.writeStringField("name", value.getName().toUpperCase());
-	 * 
-	 * }
-	 */
-
+	 @Override
+	   protected boolean include(BeanPropertyWriter writer) {
+	      return true;
+	   }
+	   @Override
+	   protected boolean include(PropertyWriter writer) {
+	      return true;
+	   }
+	
 }
