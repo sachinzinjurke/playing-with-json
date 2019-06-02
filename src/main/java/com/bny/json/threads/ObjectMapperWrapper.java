@@ -125,12 +125,12 @@ public static class RenamePropertyWriter extends BeanPropertyWriter {
 			
 		}
 		
-		public ObjectMapperWrapperBuilder setDefaultMapper() {
+		public ObjectMapperWrapperBuilder withDefaultMapper() {
 			this.mapper = new ObjectMapper();
 			this.mapper.setSerializationInclusion(Include.NON_NULL);
 			return this;
 		}
-		public ObjectMapperWrapperBuilder setExcludedFields(List<String> excludedFields) {
+		public ObjectMapperWrapperBuilder withExcludedFields(List<String> excludedFields) {
 			this.excludedFields = excludedFields;
 			if(this.excludedFields.size() > 0) {
 				this.isExclusionRequired=true;
@@ -142,7 +142,7 @@ public static class RenamePropertyWriter extends BeanPropertyWriter {
 			return this;
 		}
 		
-		public ObjectMapperWrapperBuilder setRenamedFields(Map<String, String> renamedFileds) {
+		public ObjectMapperWrapperBuilder withRenamedFields(Map<String, String> renamedFileds) {
 			this.renamedFields = renamedFileds;
 			if(this.renamedFields.size() > 0) {
 				this.isRenameRequired=true;
@@ -152,7 +152,7 @@ public static class RenamePropertyWriter extends BeanPropertyWriter {
 			}
 			return this;
 		}
-		public ObjectMapperWrapperBuilder setDateFormat(String dateFormat) {
+		public ObjectMapperWrapperBuilder withDateFormat(String dateFormat) {
 			this.dateFormat=dateFormat;
 			DateFormat df = new SimpleDateFormat(this.dateFormat);
 			this.mapper.setDateFormat(df);

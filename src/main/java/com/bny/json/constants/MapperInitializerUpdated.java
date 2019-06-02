@@ -49,15 +49,15 @@ public class MapperInitializerUpdated {
 
 	private static void createMapper(MapperConfigBean mapperConfigBean) {
 		
-		ObjectMapperWrapperBuilder builder = new ObjectMapperWrapper.ObjectMapperWrapperBuilder().setDefaultMapper();;
+		ObjectMapperWrapperBuilder builder = new ObjectMapperWrapper.ObjectMapperWrapperBuilder().withDefaultMapper();;
 		if(mapperConfigBean.getExcludedFields()!=null && mapperConfigBean.getExcludedFields().size() > 0) {
-			builder.setExcludedFields(mapperConfigBean.getExcludedFields());
+			builder.withExcludedFields(mapperConfigBean.getExcludedFields());
 		}
 		if(mapperConfigBean.getRenameFields()!=null && mapperConfigBean.getRenameFields().size() > 0) {
-			builder.setRenamedFields(mapperConfigBean.getRenameFields());
+			builder.withRenamedFields(mapperConfigBean.getRenameFields());
 		}
 		if(mapperConfigBean.getDateFormat()!=null ) {
-			builder.setDateFormat(mapperConfigBean.getDateFormat());
+			builder.withDateFormat(mapperConfigBean.getDateFormat());
 		}
 	//	ObjectMapperWrapper build = builder.build();
 		logger.info("Putting clinet mapper : {}  with excluded values : {} , renamed fields : {}",ClientConfigEnum.valueOf(mapperConfigBean.getClientName()), mapperConfigBean.getExcludedFields(),mapperConfigBean.getRenameFields());
