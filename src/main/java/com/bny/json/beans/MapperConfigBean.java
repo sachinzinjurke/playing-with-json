@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MapperConfigBean {
 	
 	
 	private String clientName;
-	private List<String> excludedFileds=new ArrayList<String>();
+	private String dateFormat;
+	private List<String> excludedFields=new ArrayList<String>();
 	private Map<String,String> renameFields=new HashMap<String,String>();
 	
 	public String getClientName() {
@@ -18,16 +21,32 @@ public class MapperConfigBean {
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
-	public List<String> getExcludedFileds() {
-		return excludedFileds;
+	
+	public String getDateFormat() {
+		return dateFormat;
 	}
-	public void setExcludedFileds(List<String> excludedFileds) {
-		this.excludedFileds = excludedFileds;
+	public void setDateFormat(String dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+	public List<String> getExcludedFields() {
+		return excludedFields;
+	}
+	public void setExcludedFields(List<String> excludedFields) {
+		this.excludedFields = excludedFields;
+	}
+	public Map<String, String> getRenameFields() {
+		return renameFields;
+	}
+	public void setRenameFields(Map<String, String> renameFields) {
+		this.renameFields = renameFields;
 	}
 	@Override
 	public String toString() {
-		return "MapperConfigBean [clientName=" + clientName + ", excludedFileds=" + excludedFileds + "]";
+		return "MapperConfigBean [clientName=" + clientName + ", dateFormat=" + dateFormat + ", excludedFields="
+				+ excludedFields + ", renameFields=" + renameFields + "]";
 	}
+	
+	
 	
 	
 

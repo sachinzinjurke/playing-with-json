@@ -11,22 +11,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.bny.json.beans.MapperConfigBean;
+import com.bny.json.threads.ObjectMapperWrapper;
+import com.bny.json.threads.ObjectMapperWrapper.ObjectMapperWrapperBuilder;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 
-public class MapperInitializer {
+public class MapperInitializerUpdated {
 
-	private static final Logger logger = LoggerFactory.getLogger(MapperInitializer.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(MapperInitializerUpdated.class.getName());
 	public static HashMap<ClientConfigEnum, ObjectMapper>MAPPER_MAP=new HashMap<ClientConfigEnum, ObjectMapper>();
 
 	public static void initialize() {
 		
 		 ObjectMapper mapper = new ObjectMapper();
 		 try {
-			 InputStream is = MapperInitializer.class.getResourceAsStream("/mapper.json");
+			 InputStream is = MapperInitializer.class.getResourceAsStream("/test.json");
 			 List<MapperConfigBean> mapperBean=mapper.readValue(is, new TypeReference<List<MapperConfigBean>>(){} );
 			 logger.info("Mapper Bean :: {}",mapperBean);
 			
@@ -46,16 +48,19 @@ public class MapperInitializer {
 	}
 
 	private static void createMapper(MapperConfigBean mapperConfigBean) {
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm a z");
-		String[]excludedFileds= mapperConfigBean.getExcludedFields().toArray(new String[mapperConfigBean.getExcludedFields().size()]);  
-		SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-		filterProvider.addFilter("postingFilter",SimpleBeanPropertyFilter.serializeAllExcept(excludedFileds));
 		
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.setSerializationInclusion(Include.NON_NULL);
-		mapper.setDateFormat(df);
-		mapper.setFilterProvider(filterProvider);
-		logger.info("Putting clinet mapper : {}  with excluded values : {} ",ClientConfigEnum.valueOf(mapperConfigBean.getClientName()), excludedFileds);
-		MAPPER_MAP.put(ClientConfigEnum.valueOf(mapperConfigBean.getClientName()), mapper);
+		ObjectMapperWrapperBuilder builder = new ObjectMapperWrapper.ObjectMapperWrapperBuilder().setDefaultMapper();;
+		if(mapperConfigBean.getExcludedFields()!=null && mapperConfigBean.getExcludedFields().size() > 0) {
+			builder.setExcludedFields(mapperConfigBean.getExcludedFields());
+		}
+		if(mapperConfigBean.getRenameFields()!=null && mapperConfigBean.getRenameFields().size() > 0) {
+			builder.setRenamedFields(mapperConfigBean.getRenameFields());
+		}
+		if(mapperConfigBean.getDateFormat()!=null ) {
+			builder.setDateFormat(mapperConfigBean.getDateFormat());
+		}
+	//	ObjectMapperWrapper build = builder.build();
+		logger.info("Putting clinet mapper : {}  with excluded values : {} , renamed fields : {}",ClientConfigEnum.valueOf(mapperConfigBean.getClientName()), mapperConfigBean.getExcludedFields(),mapperConfigBean.getRenameFields());
+		MAPPER_MAP.put(ClientConfigEnum.valueOf(mapperConfigBean.getClientName()), builder.build().getMapper());
 	}
 }

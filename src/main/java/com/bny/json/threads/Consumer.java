@@ -10,6 +10,7 @@ import com.bny.json.beans.ClientConfig;
 import com.bny.json.beans.PostingItem;
 import com.bny.json.constants.ClientConfigEnum;
 import com.bny.json.constants.MapperInitializer;
+import com.bny.json.constants.MapperInitializerUpdated;
 import com.bny.json.helper.AgentCodeHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,7 +30,7 @@ private static final Logger logger = LoggerFactory.getLogger(Consumer.class.getN
 
 	@Override
 	public void run() {
-		MapperInitializer.initialize();
+		MapperInitializerUpdated.initialize();
 		while(true) {
 			ClientConfig client=null;
 			try {
@@ -42,7 +43,7 @@ private static final Logger logger = LoggerFactory.getLogger(Consumer.class.getN
 				logger.info("processing client {}  : ",client.getAgentCode());
 				PostingItem randomPostingItem = helper.getRandomPostingItem();
 				randomPostingItem.setAgentCode(client.getAgentCode());
-				ObjectMapper mapper=MapperInitializer.MAPPER_MAP.get(ClientConfigEnum.valueOf(randomPostingItem.getAgentCode()));
+				ObjectMapper mapper=MapperInitializerUpdated.MAPPER_MAP.get(ClientConfigEnum.valueOf(randomPostingItem.getAgentCode()));
 				if(mapper!=null) {
 					logger.info("Got the mapper for client : {} " + randomPostingItem.getAgentCode());	
 					try {

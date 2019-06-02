@@ -1,0 +1,55 @@
+    
+	[
+	{
+	  "clientName" : "AIS",
+	  "dateFormat" :"yyyy-MM-dd HH:mm a z",
+	  "excludedFields" : [
+	    "price1",
+	    "price2",
+	    "price3"
+	  ],
+	   "renameFields": {
+        "amount1": "CustomAmount1",
+        "amount2": "CustomAmount2"
+    }
+	},
+	{
+	  "clientName" : "SACHIN",
+	  "dateFormat" :"dd-MM-YYYY",
+	  "excludedFields" : [
+	    "price1",
+	    "amount1",
+	    "amount2"
+	  ],
+	  "renameFields": {
+        "price2": "CustomPrice2",
+        "price3": "CustomPrice3"
+    }
+	},
+	{
+	  "clientName" : "MUKIL",
+	  "dateFormat" :"yyyy-MM-dd HH:mm:ss.SSS",
+	  "excludedFields" : [
+	    "price1",
+	    "price4",
+	    "amount3"
+	  ],
+	   "renameFields": {
+        "amount1": "CustomAmount1",
+        "amount2": "CustomAmount2"
+    }
+	},
+	{
+	  "clientName" : "SHRINI",
+	  "dateFormat" :"yyyy-MM-dd HH:mm:ss",
+	  "excludedFields" : [
+	    "price1",
+	    "price2",
+	    "amount4"
+	  ],
+	   "renameFields": {
+        "price3": "CustomPrice3",
+        "amount1": "CustomAmount1"
+    }
+	}
+	]
