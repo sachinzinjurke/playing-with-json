@@ -6,10 +6,12 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.bny.json.beans.Body;
 import com.bny.json.beans.ClientConfig;
+import com.bny.json.beans.Header;
+import com.bny.json.beans.PayLoad;
 import com.bny.json.beans.PostingItem;
 import com.bny.json.constants.ClientConfigEnum;
-import com.bny.json.constants.MapperInitializer;
 import com.bny.json.constants.MapperInitializerUpdated;
 import com.bny.json.helper.AgentCodeHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,11 +45,23 @@ private static final Logger logger = LoggerFactory.getLogger(Consumer.class.getN
 				logger.info("processing client {}  : ",client.getAgentCode());
 				PostingItem randomPostingItem = helper.getRandomPostingItem();
 				randomPostingItem.setAgentCode(client.getAgentCode());
+				
+				PayLoad payload=new PayLoad();
+				Header header=new Header();
+				header.setDeliminitor("comma");
+				header.setMessageFormat("JSON");
+				
+				Body body=new Body();
+				body.setFields(randomPostingItem);
+				
+				payload.setHeader(header);
+				payload.setBody(body);
+				
 				ObjectMapper mapper=MapperInitializerUpdated.MAPPER_MAP.get(ClientConfigEnum.valueOf(randomPostingItem.getAgentCode()));
 				if(mapper!=null) {
 					logger.info("Got the mapper for client : {} " + randomPostingItem.getAgentCode());	
 					try {
-						String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(randomPostingItem);
+						String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
 						logger.info(json);
 					} catch (JsonProcessingException e) {
 						logger.error("Error while parsing posting item for client : {} ",client.getAgentCode(),e);

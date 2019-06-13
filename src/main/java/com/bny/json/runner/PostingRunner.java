@@ -16,14 +16,13 @@ public class PostingRunner {
 		
 		ExecutorService producerService=Executors.newFixedThreadPool(1);
 		ExecutorService consumerService=Executors.newFixedThreadPool(1);
-		
 		BlockingQueue<ClientConfig>queue=new ArrayBlockingQueue<ClientConfig>(100);
-		
 		Producer producer=new Producer(queue);
-		Consumer consumer=new Consumer(queue);
-		
 		producerService.submit(producer);
-		consumerService.submit(consumer);
+		for (int i=0;i<2;i++) {
+			Consumer consumer=new Consumer(queue);
+			consumerService.submit(consumer);
+		}
 		
 		while(true) {
 			System.out.println("Sleeping");
